@@ -18,7 +18,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-data = pd.read_csv('ACI-IoT-2023.csv', nrows=100000)
+data = pd.read_csv('./ACI-IoT-2023.csv', nrows=1000)
 list(data.columns.values)
 
 data['Src_IP'] = data.Src_IP.apply(lambda x: socket.inet_ntoa(struct.pack('>I', random.randint(0xac100001, 0xac1f0001))))
@@ -187,4 +187,12 @@ cnf_matrix = confusion_matrix(actual, test_pred)
 precision,recall,fscore,none= precision_recall_fscore_support(actual, test_pred, average='weighted')
 print('Precision: '+(str(precision)))
 print('Recall: '+(str(recall)))
-print('F1-score: '+(str(fscore)))	  
+print('F1-score: '+(str(fscore)))
+
+plt.figure(figsize=(6, 4))
+sns.heatmap(cnf_matrix, annot=True, fmt="d", cmap="Blues",
+            xticklabels=['Normal', 'Attack'], yticklabels=['Normal', 'Attack'])
+plt.xlabel("Predicted Labels")
+plt.ylabel("True Labels")
+plt.title("Confusion Matrix")
+plt.show()
